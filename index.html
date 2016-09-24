@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    svg {
+        font: 10px sans-serif;
+    }
+    /*.caption {
+  font-weight: bold;
+}
+.legend{
+  float: left;
+}
+.legend path {
+  display: none;
+}
+
+.legend line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}*/
+
+    .counties {
+        fill: none;
+        stroke: #c2c2c2;
+        stroke-width: .5px;
+        stroke-linejoin: miter;
+        stroke-linecap: miter;
+    }
+
+    .state-borders {
+        fill: none;
+        stroke: #fff;
+        stroke-linejoin: round;
+        stroke-linecap: round;
+    }
+
+    .place,
+    .place-label {
+        fill: #444;
+        font-size: .4em;
+    }
+</style>
+
+<body>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="//d3js.org/topojson.v1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.9.0/d3-legend.js"></script>
+
+    </script>
+    <script>
+        var width = 960,
+            height = 500;
+
+        var color = d3.scale.threshold()
+            .domain([402, 422, 439, 461])
+            .range(['#f0f9e8', '#bae4bc', '#7bccc4', '#43a2ca', '#0868ac']);
+
+        // var legend = d3.legendColor()
+        //     .scale(color)
+        //     .shape("rect")
+        //     .useClass(true);
+
+        var path = d3.geo.path()
+            .projection(null)
+            .pointRadius(1);
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        d3.json("us.json", function(error, us) {
+            if (error) throw error;
+
+            svg.append("g")
+                .attr("class", "counties")
+                .selectAll("path")
+                .data(topojson.feature(us, us.objects.counties).features)
+                .enter().append("path")
+                .attr("d", path)
+                .style("fill", function(d) {
+                    return color(d.properties.gini * 1000);
+                });
+
+            svg.append("path")
+                .datum(topojson.mesh(us, us.objects.counties, function(a, b) {
+                    return a.id / 1000 ^ b.id / 1000;
+                }))
+                .attr("class", "state-borders")
+                .attr("d", path);
+
+            svg.append("path")
+                .datum(topojson.feature(us, us.objects.places))
+                .attr("d", path)
+                .attr("class", "place");
+
+            svg.selectAll(".place-label")
+                .data(topojson.feature(us, us.objects.places).features)
+                .enter().append("text")
+                .attr("class", "place-label")
+                .attr("transform", function(d) {
+                    return "translate(" + d.geometry.coordinates + ")";
+                })
+                .attr("x", function(d) {
+                    return d.geometry.coordinates[0] > -1 ? 6 : -6;
+                })
+                .attr("dy", ".35em")
+                .style("text-anchor", function(d) {
+                    return d.geometry.coordinates[0] > -1 ? "start" : "end";
+                })
+                .text(function(d) {
+                    return d.properties.name;
+                });
+
+        });
+        // svg.append("g")
+        //   .attr("class", "legend")
+        //   .attr("transform", "translate(20,20)")
+        //
+        // svg.select(".legend")
+        //   .call(legend);
+    </script>
