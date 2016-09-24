@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-    svg {
-        font: 10px sans-serif;
-    }
-    /*.caption {
+svg {
+    font: 10px sans-serif;
+}
+/*.caption {
   font-weight: bold;
 }
 .legend{
@@ -19,32 +19,38 @@
   shape-rendering: crispEdges;
 }*/
 
-    .counties {
-        fill: none;
-        stroke: #c2c2c2;
-        stroke-width: .5px;
-        stroke-linejoin: miter;
-        stroke-linecap: miter;
-    }
+.counties {
+    fill: none;
+    stroke: #c2c2c2;
+    stroke-width: .5px;
+    stroke-linejoin: miter;
+    stroke-linecap: miter;
+}
 
-    .state-borders {
-        fill: none;
-        stroke: #fff;
-        stroke-linejoin: round;
-        stroke-linecap: round;
-    }
+.state-borders {
+    fill: none;
+    stroke: #fff;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
 
-    .place,
-    .place-label {
-        fill: #444;
-        font-size: .4em;
-    }
+.place{
+  stroke: #fff;
+  stroke-width: .25px;
+}
+.place-label {
+    fill: #000;
+    font-size: .4em;
+    font-weight: bold;
+    stroke: #fff;
+    stroke-width: .2px;
+}
 </style>
 
 <body>
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="//d3js.org/topojson.v1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.9.0/d3-legend.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.9.0/d3-legend.js"></script> -->
 
     </script>
     <script>
@@ -62,7 +68,7 @@
 
         var path = d3.geo.path()
             .projection(null)
-            .pointRadius(1);
+            .pointRadius(.5);
 
         var svg = d3.select("body").append("svg")
             .attr("width", width)
@@ -101,7 +107,7 @@
                     return "translate(" + d.geometry.coordinates + ")";
                 })
                 .attr("x", function(d) {
-                    return d.geometry.coordinates[0] > -1 ? 6 : -6;
+                    return d.geometry.coordinates[0] > -1 ? 2 : -2;
                 })
                 .attr("dy", ".35em")
                 .style("text-anchor", function(d) {
