@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-svg {
-    font: 10px sans-serif;
-}
+    svg {
+        font: 10px sans-serif;
+    }
 
-.counties {
-    fill: none;
-    stroke: #c2c2c2;
-    stroke-width: .5px;
-    stroke-linejoin: miter;
-    stroke-linecap: miter;
-}
+    .counties {
+        fill: none;
+        stroke: #c2c2c2;
+        stroke-width: .5px;
+        stroke-linejoin: miter;
+        stroke-linecap: miter;
+    }
 
-.state-borders {
-    fill: none;
-    stroke: #fff;
-    stroke-linejoin: round;
-    stroke-linecap: round;
-}
+    .state-borders {
+        fill: none;
+        stroke: #fff;
+        stroke-linejoin: round;
+        stroke-linecap: round;
+    }
 
-.place{
-  stroke: #fff;
-  stroke-width: .25px;
-}
-.place-label {
-    fill: #000;
-    font-size: .4em;
-    font-weight: bold;
-    stroke: #fff;
-    stroke-width: .2px;
-}
+    .place {
+        stroke: #fff;
+        stroke-width: .25px;
+    }
+
+    .place-label {
+        fill: #000;
+        font-size: .4em;
+        font-weight: bold;
+        stroke: #fff;
+        stroke-width: .2px;
+    }
 </style>
 
 <body>
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="//d3js.org/topojson.v1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
+
 
     </script>
     <script>
@@ -55,9 +58,12 @@ svg {
             .attr("width", width)
             .attr("height", height);
 
-        d3.json("us.json", function(error, us) {
-            if (error) throw error;
+        queue()
+            .defer(d3.json, "us.json")
+            .await(ready);
 
+        function ready(error, us) {
+            if (error) throw error;
             svg.append("g")
                 .attr("class", "counties")
                 .selectAll("path")
@@ -97,6 +103,5 @@ svg {
                 .text(function(d) {
                     return d.properties.name;
                 });
-
-        });
+        }
     </script>
