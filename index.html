@@ -46,7 +46,7 @@
             height = 500;
 
         var color = d3.scale.threshold()
-            .domain([402, 422, 439, 461])
+            .domain([.402, .422, .439, .461])
             .range(['#f0f9e8', '#bae4bc', '#7bccc4', '#43a2ca', '#0868ac']);
 
 
@@ -71,7 +71,7 @@
                 .enter().append("path")
                 .attr("d", path)
                 .style("fill", function(d) {
-                    return color(d.properties.gini * 1000);
+                    return color(d.properties.gini);
                 });
 
             svg.append("path")
