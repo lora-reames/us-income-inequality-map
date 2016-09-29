@@ -4,20 +4,6 @@
 svg {
     font: 10px sans-serif;
 }
-/*.caption {
-  font-weight: bold;
-}
-.legend{
-  float: left;
-}
-.legend path {
-  display: none;
-}
-
-.legend line {
-  stroke: #000;
-  shape-rendering: crispEdges;
-}*/
 
 .counties {
     fill: none;
@@ -50,7 +36,6 @@ svg {
 <body>
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="//d3js.org/topojson.v1.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.9.0/d3-legend.js"></script> -->
 
     </script>
     <script>
@@ -61,10 +46,6 @@ svg {
             .domain([402, 422, 439, 461])
             .range(['#f0f9e8', '#bae4bc', '#7bccc4', '#43a2ca', '#0868ac']);
 
-        // var legend = d3.legendColor()
-        //     .scale(color)
-        //     .shape("rect")
-        //     .useClass(true);
 
         var path = d3.geo.path()
             .projection(null)
@@ -118,10 +99,4 @@ svg {
                 });
 
         });
-        // svg.append("g")
-        //   .attr("class", "legend")
-        //   .attr("transform", "translate(20,20)")
-        //
-        // svg.select(".legend")
-        //   .call(legend);
     </script>
