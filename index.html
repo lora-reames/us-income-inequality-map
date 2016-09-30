@@ -89,6 +89,10 @@
 
         function ready(error, us) {
             if (error) throw error;
+
+            //renaming etc in progress see line 88 g=svg.append("g")
+            //need more changes FIX ME
+            // http://bl.ocks.org/mbostock/9656675
             g.append("g")
                 .selectAll("path")
                 .data(topojson.feature(us, us.objects.counties).features)
