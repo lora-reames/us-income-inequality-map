@@ -14,7 +14,7 @@
     }
 
     .state {
-        fill: none;
+        fill: #000;
     }
 
     .state-borders {
@@ -81,20 +81,14 @@
                 giniById.set(d.id, +d.gini);
             })
             .await(ready);
-        svg
-            .call(zoom) // delete this line to disable free zooming
-            .call(zoom.event);
 
-        var g = svg.append("g");
+        svg.call(zoom) // delete this line to disable free zooming
+            .call(zoom.event);
 
         function ready(error, us) {
             if (error) throw error;
 
-            //renaming etc in progress see line 88 g=svg.append("g")
-            //need more changes FIX ME
-            // http://bl.ocks.org/mbostock/9656675
-            g.append("g")
-                .selectAll("path")
+            svg.selectAll("path")
                 .data(topojson.feature(us, us.objects.counties).features)
                 .enter().append("path")
                 .attr("d", path)
@@ -108,12 +102,13 @@
             //     }))
             //     .attr("class", "state-borders")
             //     .attr("d", path);
+
             svg.selectAll("path")
-                .data(topojson.feature(us, us.objects.states).features)
-                .enter().append("path")
-                .attr("d", path)
-                .attr("class", "state")
-                .on("click", clicked);
+              .data(topojson.feature(us, us.objects.states).features)
+              .enter().append("path")
+              .attr("d", path)
+              .attr("class", "state")
+              .on("click", clicked);
 
             svg.append("path")
                 .datum(topojson.mesh(us, us.objects.states, function(a, b) {
@@ -121,6 +116,10 @@
                 }))
                 .attr("class", "state-borders")
                 .attr("d", path);
+
+
+
+
             // svg.append("path")
             //     .datum(topojson.feature(us, us.objects.places))
             //     .attr("d", path)
@@ -175,8 +174,8 @@
         }
 
         function zoomed() {
-            g.style("stroke-width", 1.5 / d3.event.scale + "px");
-            g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+            svg.style("stroke-width", 1.5 / d3.event.scale + "px");
+            svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         }
 
         // If the drag behavior prevents the default click,
